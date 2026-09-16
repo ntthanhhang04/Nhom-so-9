@@ -1,15 +1,13 @@
-int mang1chieu::timkiem(int x)
+void M1C::sapxep() 
 {
-    int k = -1;
-
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] == x)
-        {
-            k = i;
+    for (int i = 0; i < spt - 1; i++) {
+        for (int j = i + 1; j < spt; j++) {
+            if (a[i] > a[j]) {
+                int temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
         }
     }
-
-    return k;
+    cout << "Ða sap xep mang tang dan!\n";
 }
-
