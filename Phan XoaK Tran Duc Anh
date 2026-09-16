@@ -1,12 +1,55 @@
-void M1C::xoak(int k) {
-    if (k < 0 || k >= spt) {
-        cout << "Vi tri xoa khong hop le!\n";
-        return;
-    }
-    for (int i = k; i < spt - 1; i++) {
-        a[i] = a[i + 1];
-    }
-    spt--;
-    cout << "Ða xoa tai vi tri " << k << " thanh cong!\n";
-}
+#include <iostream>
 
+using namespace std;
+
+class M1C {
+private:
+    int spt;
+    int a[200];
+
+public:
+    void nhap() {
+        cout << "Nhap so luong phan tu: ";
+        cin >> spt;
+        for (int i = 0; i < spt; i++) {
+            cout << "a[" << i << "] = ";
+            cin >> a[i];
+        }
+    }
+
+    void xuat() {
+        cout << "Mang hien tai: ";
+        for (int i = 0; i < spt; i++) {
+            cout << a[i] << " ";
+        }
+        cout << "\n";
+    }
+
+    void xoak(int k) {
+        if (k < 0 || k >= spt) {
+            cout << "Vi tri xoa khong hop le!\n";
+            return;
+        }
+
+        for (int i = k; i < spt - 1; i++) {
+            a[i] = a[i + 1];
+        }
+        spt--; 
+        cout << "Da xoa xong tai vi tri " << k << "!\n";
+    }
+};
+
+int main() {
+    M1C obj;
+    obj.nhap();
+    obj.xuat();
+
+    int k;
+    cout << "Nhap vi tri k can xoa: ";
+    cin >> k;
+
+    obj.xoak(k);
+    obj.xuat();
+
+    return 0;
+}
