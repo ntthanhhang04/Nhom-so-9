@@ -1,0 +1,12 @@
+   void chenk(int k, int giaTriChen) { 
+        if (k < 0 || k > spt || spt >= 200) {
+            cout << "=> LOI: Vi tri chen (" << k << ") khong hop le hoac mang da day!\n";
+            return;
+        }
+        for (int i = spt; i > k; i--) {
+            a[i] = a[i - 1];
+        }
+        a[k] = giaTriChen; 
+        spt++;
+    }
+};
