@@ -1,12 +1,71 @@
-   void chenk(int k, int giaTriChen) { 
-        if (k < 0 || k > spt || spt >= 200) {
-            cout << "=> LOI: Vi tri chen (" << k << ") khong hop le hoac mang da day!\n";
+#include <iostream>
+using namespace std;
+
+class M1C {
+private:
+    int spt;         
+    int a[200];
+
+public:
+    void nhap() {
+        cout << "Nhap so luong phan tu ban dau (spt): "; 
+        cin >> spt;
+        for (int i = 0; i < spt; i++) {
+            cout << "a[" << i << "] = ";
+            cin >> a[i];
+        }
+    }
+
+    void xuat() {
+        for (int i = 0; i < spt; i++) {
+            cout << a[i] << "  ";
+        }
+        cout << endl;
+    }
+
+    void chenk(int k, int giaTriChen) {
+        if (k < 0 || k > spt) {
+            cout << "\n[LOI] Vi tri chen k = " << k << " nam ngoai pham vi!\n";
+            return; 
+        }
+        if (spt >= 200) {
+            cout << "\n[LOI] Mang da day, khong the chen them!\n";
             return;
         }
+
         for (int i = spt; i > k; i--) {
-            a[i] = a[i - 1];
+            a[i] = a[i - 1]; 
         }
-        a[k] = giaTriChen; 
+
+        a[k] = giaTriChen;
         spt++;
+        
+        cout << "\n=> Da chen thanh cong so " << giaTriChen << " vao vi tri index " << k << "!\n";
     }
 };
+
+int main() {
+    M1C mang;
+
+    cout << "--- BUC 1: TAO MANG BAN DAU ---\n";
+    mang.nhap();
+    
+    cout << "\nMang hien tai: ";
+    mang.xuat();
+
+    cout << "\n--- BUOC 2: THUC HIEN CHEN ---\n";
+    int viTriK, giaTriMoi;
+    
+    cout << "Nhap vi tri index k muon chen: ";
+    cin >> viTriK;
+    cout << "Nhap gia tri con so muon chen vao: ";
+    cin >> giaTriMoi;
+
+    // Gọi hàm chèn
+    mang.chenk(viTriK, giaTriMoi);
+
+    cout << "\nMang sau khi chen: ";
+    mang.xuat();
+
+    return 0;
+}
