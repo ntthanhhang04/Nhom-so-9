@@ -1,0 +1,166 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+class LichHoc {
+private:
+    string maLH, tenMon, maLop, giangVien, phongHoc;
+    int thu, tietBatDau, soTiet;
+
+public:
+    void nhap() {
+        cout << "  Ma lich hoc: "; getline(cin, maLH);
+        cout << "  Ten mon hoc: "; getline(cin, tenMon);
+        cout << "  Ma lop: "; getline(cin, maLop);
+        cout << "  Giang vien phu trach: "; getline(cin, giangVien);
+        cout << "  Thu trong tuan (2-7): "; cin >> thu;
+        cout << "  Tiet bat dau: "; cin >> tietBatDau;
+        cout << "  So tiet: "; cin >> soTiet;
+        cin.ignore(); 
+        cout << "  Phong hoc: "; getline(cin, phongHoc);
+    }
+
+    void xuat() {
+        cout << left << setw(10) << maLH
+             << setw(20) << tenMon
+             << setw(10) << maLop
+             << setw(20) << giangVien
+             << setw(5) << thu
+             << setw(5) << tietBatDau
+             << setw(5) << soTiet
+             << setw(10) << phongHoc << endl;
+    }
+
+    int getThu() { return thu; }
+    int getTietBatDau() { return tietBatDau; }
+    string getMaLop() { return maLop; }
+    string getTenMon() { return tenMon; }
+};
+
+void nhapDS(LichHoc ds[], int &n) {
+    do {
+        cout << "Nhap so luong lich hoc (0 < n < 200) : ";
+        cin >> n;
+    } while (n <= 0 || n >= 200);
+    
+    cin.ignore(); 
+    for (int i = 0; i < n; i++) {
+        cout << "\n    Nhap lich hoc thu " << i + 1 << "    \n";
+        ds[i].nhap();
+    }
+}
+
+void xuatDS(LichHoc ds[], int n) {
+    cout << "\n            DANH SACH LICH HOC            \n";
+    cout << left << setw(10) << "Ma LH" << setw(20) << "Ten Mon" << setw(10) << "Ma Lop"
+         << setw(20) << "Giang Vien" << setw(5) << "Thu" << setw(5) << "Tiet"
+         << setw(5) << "So Tiet" << setw(10) << "Phong" << endl;
+    cout << "                                                                               \n";
+    for (int i = 0; i < n; i++) {
+        ds[i].xuat();
+    }
+}
+
+void sapXep(LichHoc ds[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (ds[i].getThu() > ds[j].getThu() || 
+               (ds[i].getThu() == ds[j].getThu() && ds[i].getTietBatDau() > ds[j].getTietBatDau())) {
+                LichHoc temp = ds[i];
+                ds[i] = ds[j];
+                ds[j] = temp;
+            }
+        }
+    }
+}
+
+void timKiem(LichHoc ds[], int n, string tuKhoa) {
+    bool thay = false;
+    cout << "\n     Ket qua tim kiem     \n";
+    for (int i = 0; i < n; i++) {
+        if (ds[i].getMaLop() == tuKhoa || ds[i].getTenMon() == tuKhoa) {
+            ds[i].xuat();
+            thay = true;
+        }
+    }
+    if (!thay) cout << "Khong tim thay lich hoc phu hop!\n";
+}
+
+void boSung(LichHoc ds[], int &n, int viTri) {
+    if (viTri < 0 || viTri > n || n >= 200) {
+        cout << "Vi tri khong hop le hoac danh sach da day!\n";
+        return;
+    }
+    cout << "\n    Nhap thong tin lich hoc moi can bo sung     \n";
+    LichHoc lhMoi;
+    lhMoi.nhap();
+    
+    for (int i = n; i > viTri; i--) {
+        ds[i] = ds[i - 1];
+    }
+    ds[viTri] = lhMoi;
+    n++;
+    cout << "=> Da bo sung thanh cong!\n";
+}
+
+void xoa(LichHoc ds[], int &n, int viTri) {
+    if (viTri < 0 || viTri >= n) {
+        cout << "Vi tri khong hop le!\n";
+        return;
+    }
+    for (int i = viTri; i < n - 1; i++) {
+        ds[i] = ds[i + 1];
+    }
+    n--;
+    cout << "=> Da xoa thanh cong!\n";
+}
+
+int main() {
+    LichHoc ds[200];
+    int n = 0;
+    int luaChon;
+    
+    do {
+        cout << "\n              MENU QUAN LY              \n";
+        cout << "1. Nhap danh sach lich hoc\n";
+        cout << "2. In danh sach\n";
+        cout << "3. Sap xep danh sach (Thu -> Tiet)\n";
+        cout << "4. Tim kiem theo Ma lop / Ten mon\n";
+        cout << "5. Bo sung 1 lich hoc vao vi tri bat ky\n";
+        cout << "6. Xoa 1 lich hoc tai vi tri bat ky\n";
+        cout << "0. Thoat chuong trinh\n";
+        cout << "Chon chuc nang: ";
+        cin >> luaChon;
+        
+        if (luaChon == 1) {
+            nhapDS(ds, n);
+        } else if (luaChon == 2) {
+            if (n == 0) cout << "Danh sach trong!\n";
+            else xuatDS(ds, n);
+        } else if (luaChon == 3) {
+            sapXep(ds, n);
+            cout << "=> Da sap xep xong! Bam so 2 de xem ket qua.\n";
+        } else if (luaChon == 4) {
+            cin.ignore();
+            string tuKhoa;
+            cout << "Nhap Ma lop hoac Ten mon can tim: ";
+            getline(cin, tuKhoa);
+            timKiem(ds, n, tuKhoa);
+        } else if (luaChon == 5) {
+            int vt;
+            cout << "Nhap vi tri can bo sung (tu 0 den " << n << "): ";
+            cin >> vt;
+            cin.ignore();
+            boSung(ds, n, vt);
+        } else if (luaChon == 6) {
+            int vt;
+            cout << "Nhap vi tri can xoa (tu 0 den " << n - 1 << "): ";
+            cin >> vt;
+            xoa(ds, n, vt);
+        }
+    } while (luaChon != 0);
+    
+    return 0;
+}
